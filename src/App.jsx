@@ -7,8 +7,8 @@ import { UI } from "./components/UI";
 function App() {
   return (
     <>
-      <Loader />
-      <Leva hidden />
+      <Loader visible />
+      <Leva />
       <UI />
       <Canvas shadows camera={{ position: [0, 0, 1], fov: 30 }}>
         <Experience />
