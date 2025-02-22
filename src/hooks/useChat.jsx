@@ -12,20 +12,20 @@ export const ChatProvider = ({ children }) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Accept": "application/json"
         },
-        mode: "no-cors",
         body: JSON.stringify({ message }),
       });
       
-      if (!data.ok) {
-        throw new Error(`HTTP error! status: ${data.status}`);
+      const response = await data.json();
+      if (response && response.messages) {
+        setMessages((messages) => [...messages, ...response.messages]);
+      } else {
+        throw new Error("Invalid response format");
       }
-      
-      const resp = (await data.json()).messages;
-      setMessages((messages) => [...messages, ...resp]);
     } catch (error) {
       console.error("Chat error:", error);
-      // Optionally handle error in UI
+      setMessages((messages) => [...messages, { text: "Sorry, there was an error processing your message. Please try again." }]);
     } finally {
       setLoading(false);
     }
